@@ -23,7 +23,7 @@ alias clear="clear && printf '\e[3J'"
 
 # Homebrew Linking/Headers Config
 export LIBRARY_PATH="${LIBRARY_PATH:+${LIBRARY_PATH}:}/opt/homebrew/lib"
-export CPLUS_INCLUDE_PATH="${CPLUS_INCLUDE_PATH:+${CPLUS_INCLUDE_PATH}:}/opt/homebrew/include"
+export CPATH="${CPATH:+${CPATH}:}/opt/homebrew/include"
 
 ## LLVM Config
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
@@ -34,9 +34,9 @@ export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 
 ## Ruby Config
 export PATH="/usr/local/opt/ruby/bin:$PATH"
-export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
-export LDFLAGS="-L/usr/local/opt/ruby/lib"
-export CPPFLAGS="-I/usr/local/opt/ruby/include"
+#export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
+#export LDFLAGS="-L/usr/local/opt/ruby/lib"
+#export CPPFLAGS="-I/usr/local/opt/ruby/include"
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init - zsh)"
 ## Python Config
@@ -46,7 +46,6 @@ eval "$(pyenv init -)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 
 # Functions
 mcd() {
