@@ -7,14 +7,19 @@ CompileFlags:
             -Wpedantic,
             -Werror=pedantic,
             -Wconversion,
+            -D_XOPEN_SOURCE,
             -Wsign-conversion,
             -Wfloat-equal,
             -Wshadow,
             -Wunreachable-code,
             -fexperimental-library,
             -I/opt/homebrew/include,
+            -L/opt/homebrew/opt/llvm/lib/c++,
+            -Wl,
+            -rpath,
+            /opt/homebrew/opt/llvm/lib/c++,
         ]
-
+    Compiler: /opt/homebrew/opt/llvm/bin/clang
 Index:
     Background: Skip     # Disable slow background indexing of these files.
 

@@ -13,8 +13,6 @@ source $ZSH/oh-my-zsh.sh
 
 
 # Aliases
-#alias g++='/usr/local/bin/g++'
-#alias gcc='/usr/local/bin/gcc'
 alias vim='nnvim'
 alias vi='nvim'
 alias clear="clear && printf '\e[3J'"
