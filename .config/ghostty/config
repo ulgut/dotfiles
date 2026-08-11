@@ -47,4 +47,3 @@ keybind = cmd+up=scroll_to_top
 keybind = cmd+down=scroll_to_bottom
 # Updates
 auto-update-channel = tip
-
