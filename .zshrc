@@ -77,6 +77,46 @@ mcd() {
         cd $1
 }
 
+# Keep Git's global commit identity in sync with `gh auth switch` on github.com.
+gh() {
+  command gh "$@" || return $?
+  [[ "$1" == auth && "$2" == switch ]] || return 0
+
+  local gh_host="${GH_HOST:-github.com}" arg identity login account_id email
+  local -a switch_args
+  switch_args=("${@:3}")
+  while (( ${#switch_args} )); do
+    arg="$switch_args[1]"
+    shift switch_args
+    case "$arg" in
+      --help) return 0 ;;
+      -h|--hostname) gh_host="$switch_args[1]"; shift switch_args ;;
+      --hostname=*) gh_host="${arg#*=}" ;;
+      -h?*) gh_host="${arg#-h}" ;;
+    esac
+  done
+  [[ "$gh_host" == github.com ]] || return 0
+
+  identity=$(command gh api --hostname github.com user --jq '[.login, (.id | tostring)] | @tsv') || {
+    print -u2 -- 'GitHub account switched, but fetching the Git identity failed; Git config was not updated.'
+    return 1
+  }
+  login="${identity%%$'\t'*}"
+  account_id="${identity#*$'\t'}"
+  if [[ "$identity" != *$'\t'* || -z "$login" || "$account_id" != <-> ]]; then
+    print -u2 -- 'GitHub returned an invalid identity; Git config was not updated.'
+    return 1
+  fi
+  email="${account_id}+${login}@users.noreply.github.com"
+  git config --global user.name "$login" &&
+    git config --global user.email "$email" &&
+    git config --global github.user "$login" || {
+      print -u2 -- 'GitHub account switched, but updating the global Git config failed.'
+      return 1
+    }
+  print -- "Git global identity: $login <$email>"
+}
+
 # ZSH Plugins
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
